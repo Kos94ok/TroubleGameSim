@@ -13,11 +13,24 @@ int io::getch()
 
 void io::MoveCaretTo(int x, int y)
 {
-	HANDLE hCon;
-	COORD cPos;
+	// Reference:
+	// https://stackoverflow.com/questions/2732292/setting-the-cursor-position-in-a-win32-console-application
 
-	hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-	cPos.X = x;
-	cPos.Y = y;
-	SetConsoleCursorPosition(hCon, cPos);
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD caretPosition = { (short)x, (short)y };
+	SetConsoleCursorPosition(consoleHandle, caretPosition);
+}
+
+void io::ForceClear()
+{
+	io::MoveCaretTo(0, 0);
+	for (int y = 0; y < FRAME_HEIGHT; y++)
+	{
+		for (int x = 0; x < FRAME_WIDTH; x++)
+		{
+			std::cout << ' ';
+		}
+		std::cout << '\n';
+	}
+	io::MoveCaretTo(0, 0);
 }

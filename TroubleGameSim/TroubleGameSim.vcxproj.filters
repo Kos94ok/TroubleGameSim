@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Файлы исходного кода">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Заголовочные файлы">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Файлы ресурсов">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Заголовочные файлы\Namespaces">
-      <UniqueIdentifier>{33358bea-a8bb-489c-bd80-cd374c6cafe1}</UniqueIdentifier>
+    <Filter Include="Source code">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Заголовочные файлы\Precompiled">
-      <UniqueIdentifier>{710f81a1-f2bf-4519-9d7e-d0db902ef604}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Заголовочные файлы\Classes">
-      <UniqueIdentifier>{78813c46-1eb7-4eb0-96f6-36e616d88e24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы исходного кода\Precompiled">
+    <Filter Include="Source code\Precompiled">
       <UniqueIdentifier>{6497ee41-4d5d-440a-8f76-329dc6bf6f27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы исходного кода\Namespaces">
+    <Filter Include="Source code\Namespaces">
       <UniqueIdentifier>{101f6592-4a94-48f7-9a67-5a9440a41176}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы исходного кода\Classes">
+    <Filter Include="Source code\Classes">
       <UniqueIdentifier>{bfcfc038-f7ad-4855-8af1-5ef70fc8a10d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\Namespaces">
+      <UniqueIdentifier>{33358bea-a8bb-489c-bd80-cd374c6cafe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Precompiled">
+      <UniqueIdentifier>{710f81a1-f2bf-4519-9d7e-d0db902ef604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Classes">
+      <UniqueIdentifier>{78813c46-1eb7-4eb0-96f6-36e616d88e24}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,66 +37,63 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
-      <Filter>Заголовочные файлы\Namespaces</Filter>
+      <Filter>Headers\Namespaces</Filter>
     </ClInclude>
     <ClInclude Include="gfx.h">
-      <Filter>Заголовочные файлы\Namespaces</Filter>
+      <Filter>Headers\Namespaces</Filter>
     </ClInclude>
     <ClInclude Include="io.h">
-      <Filter>Заголовочные файлы\Namespaces</Filter>
+      <Filter>Headers\Namespaces</Filter>
     </ClInclude>
     <ClInclude Include="settings.h">
-      <Filter>Заголовочные файлы\Namespaces</Filter>
+      <Filter>Headers\Namespaces</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>Заголовочные файлы\Precompiled</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Заголовочные файлы\Precompiled</Filter>
+      <Filter>Headers\Precompiled</Filter>
     </ClInclude>
     <ClInclude Include="Peg.h">
-      <Filter>Заголовочные файлы\Classes</Filter>
+      <Filter>Headers\Classes</Filter>
     </ClInclude>
     <ClInclude Include="board.h">
-      <Filter>Заголовочные файлы\Namespaces</Filter>
+      <Filter>Headers\Namespaces</Filter>
     </ClInclude>
     <ClInclude Include="BoardUnit.h">
-      <Filter>Заголовочные файлы\Classes</Filter>
+      <Filter>Headers\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Заголовочные файлы\Classes</Filter>
+      <Filter>Headers\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Source code</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Файлы исходного кода\Precompiled</Filter>
+      <Filter>Source code\Precompiled</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
-      <Filter>Файлы исходного кода\Namespaces</Filter>
+      <Filter>Source code\Namespaces</Filter>
     </ClCompile>
     <ClCompile Include="gfx.cpp">
-      <Filter>Файлы исходного кода\Namespaces</Filter>
+      <Filter>Source code\Namespaces</Filter>
     </ClCompile>
     <ClCompile Include="io.cpp">
-      <Filter>Файлы исходного кода\Namespaces</Filter>
+      <Filter>Source code\Namespaces</Filter>
     </ClCompile>
     <ClCompile Include="io_linux.cpp">
-      <Filter>Файлы исходного кода\Namespaces</Filter>
+      <Filter>Source code\Namespaces</Filter>
     </ClCompile>
     <ClCompile Include="io_win32.cpp">
-      <Filter>Файлы исходного кода\Namespaces</Filter>
+      <Filter>Source code\Namespaces</Filter>
     </ClCompile>
     <ClCompile Include="board.cpp">
-      <Filter>Файлы исходного кода\Namespaces</Filter>
+      <Filter>Source code\Namespaces</Filter>
     </ClCompile>
     <ClCompile Include="Peg.cpp">
-      <Filter>Файлы исходного кода\Classes</Filter>
+      <Filter>Source code\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Файлы исходного кода\Classes</Filter>
+      <Filter>Source code\Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@ int main()
 {
 	int in = -1;
 	io::ClearBuffers();
+	io::ForceClear();
 	game::StartNewGame();
 	while (in != KEYS_EXIT && !game::isCompleted)
 	{

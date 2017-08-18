@@ -1,6 +1,6 @@
 
 #include "stdafx.h"
-#include "peg.h"
+#include "Peg.h"
 #include "settings.h"
 #include "board.h"
 

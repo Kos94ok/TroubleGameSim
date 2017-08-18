@@ -148,16 +148,3 @@ void io::ClearBuffers()
 	}
 }
 
-void io::ForceClear()
-{
-	io::MoveCaretTo(0, 0);
-	for (int y = 0; y < FRAME_HEIGHT; y++)
-	{
-		for (int x = 0; x < FRAME_WIDTH; x++)
-		{
-			std::cout << ' ';
-		}
-		std::cout << '\n';
-	}
-	io::MoveCaretTo(0, 0);
-}
