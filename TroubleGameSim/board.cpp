@@ -11,29 +11,35 @@ std::vector<BoardUnit> board::units;
 
 void board::CreateNewBoard()
 {
-	// Create the starting positions (home area)
+	/* Initialize the temporary data vectors with unit positions first. The order of those data points is important. */
+
+	/* Create the starting positions (home area) */
 	std::vector<std::pair<int, int>> homeUnits;
+	/* Player 0 */
 	homeUnits.push_back({ 3,  0 });
-	homeUnits.push_back({ 5,  0 });
-	homeUnits.push_back({ 1,  1 });
-	homeUnits.push_back({ 3,  1 });
+	if (PEGS_PER_PLAYER > 1) { homeUnits.push_back({ 5,  0 }); }
+	if (PEGS_PER_PLAYER > 2) { homeUnits.push_back({ 1,  1 }); }
+	if (PEGS_PER_PLAYER > 3) { homeUnits.push_back({ 3,  1 }); }
 
+	/* Player 1 */
 	homeUnits.push_back({ 33,  0 });
-	homeUnits.push_back({ 35,  0 });
-	homeUnits.push_back({ 35,  1 });
-	homeUnits.push_back({ 37,  1 });
+	if (PEGS_PER_PLAYER > 1) { homeUnits.push_back({ 35,  0 }); }
+	if (PEGS_PER_PLAYER > 2) { homeUnits.push_back({ 35,  1 }); }
+	if (PEGS_PER_PLAYER > 3) { homeUnits.push_back({ 37,  1 }); }
 
+	/* Player 2 */
 	homeUnits.push_back({ 35, 13 });
-	homeUnits.push_back({ 37, 13 });
-	homeUnits.push_back({ 33, 14 });
-	homeUnits.push_back({ 35, 14 });
+	if (PEGS_PER_PLAYER > 1) { homeUnits.push_back({ 37, 13 }); }
+	if (PEGS_PER_PLAYER > 2) { homeUnits.push_back({ 33, 14 }); }
+	if (PEGS_PER_PLAYER > 3) { homeUnits.push_back({ 35, 14 }); }
 
+	/* Player 3 */
 	homeUnits.push_back({ 1, 13 });
-	homeUnits.push_back({ 3, 13 });
-	homeUnits.push_back({ 3, 14 });
-	homeUnits.push_back({ 5, 14 });
+	if (PEGS_PER_PLAYER > 1) { homeUnits.push_back({ 3, 13 }); }
+	if (PEGS_PER_PLAYER > 2) { homeUnits.push_back({ 3, 14 }); }
+	if (PEGS_PER_PLAYER > 3) { homeUnits.push_back({ 5, 14 }); }
 
-	// Create the main circle (public area)
+	/* Create the main circle (public area) */
 	std::vector<std::pair<int, int>> publicUnits;
 	publicUnits.push_back({ 13, 0 });
 	publicUnits.push_back({ 17, 0 });
@@ -67,33 +73,38 @@ void board::CreateNewBoard()
 	publicUnits.push_back({  7,  2 });
 	publicUnits.push_back({ 10,  1 });
 
-	// Create the finish units (finish area)
+	/* Create the finish units (finish area) */
 	std::vector<std::pair<int, int>> finishUnits;
+
+	/* Player 0 */
 	finishUnits.push_back({  9,  3 });
-	finishUnits.push_back({ 11,  4 });
-	finishUnits.push_back({ 13,  5 });
-	finishUnits.push_back({ 15,  6 });
+	if (PEGS_PER_PLAYER > 1) { finishUnits.push_back({ 11,  4 }); }
+	if (PEGS_PER_PLAYER > 2) { finishUnits.push_back({ 13,  5 }); }
+	if (PEGS_PER_PLAYER > 3) { finishUnits.push_back({ 15,  6 }); }
 
+	/* Player 1 */
 	finishUnits.push_back({ 29,  3 });
-	finishUnits.push_back({ 27,  4 });
-	finishUnits.push_back({ 25,  5 });
-	finishUnits.push_back({ 23,  6 });
+	if (PEGS_PER_PLAYER > 1) { finishUnits.push_back({ 27,  4 }); }
+	if (PEGS_PER_PLAYER > 2) { finishUnits.push_back({ 25,  5 }); }
+	if (PEGS_PER_PLAYER > 3) { finishUnits.push_back({ 23,  6 }); }
 
+	/* Player 2 */
 	finishUnits.push_back({ 29, 11 });
-	finishUnits.push_back({ 27, 10 });
-	finishUnits.push_back({ 25,  9 });
-	finishUnits.push_back({ 23,  8 });
+	if (PEGS_PER_PLAYER > 1) { finishUnits.push_back({ 27, 10 }); }
+	if (PEGS_PER_PLAYER > 2) { finishUnits.push_back({ 25,  9 }); }
+	if (PEGS_PER_PLAYER > 3) { finishUnits.push_back({ 23,  8 }); }
 
+	/* Player 3 */
 	finishUnits.push_back({ 9,  11 });
-	finishUnits.push_back({ 11, 10 });
-	finishUnits.push_back({ 13,  9 });
-	finishUnits.push_back({ 15,  8 });
+	if (PEGS_PER_PLAYER > 1) { finishUnits.push_back({ 11, 10 }); }
+	if (PEGS_PER_PLAYER > 2) { finishUnits.push_back({ 13,  9 }); }
+	if (PEGS_PER_PLAYER > 3) { finishUnits.push_back({ 15,  8 }); }
 
 	// Reserve some memory
 	BoardUnit unit(0, 0, 0, 0, -1);
 
-	// Flush the data into the final form
-	// Adding home zone units
+	/* Transform the temporary data points into BoardUnit objects. */
+	/* Home units */
 	int vectorIndex = 0;
 	for (int player = 0; player < PLAYER_COUNT; player++)
 	{
@@ -105,7 +116,7 @@ void board::CreateNewBoard()
 		}
 	}
 
-	// Adding finish zone units
+	/* Finish units */
 	vectorIndex = 0;
 	for (int player = 0; player < PLAYER_COUNT; player++)
 	{
@@ -117,7 +128,7 @@ void board::CreateNewBoard()
 		}
 	}
 
-	// Adding public zone units
+	/* Public units */
 	for (int i = 0; i < (int)publicUnits.size(); i++)
 	{
 		unit.Recycle(i, publicUnits[i].first, publicUnits[i].second, AREA_PUBLIC);
@@ -125,32 +136,9 @@ void board::CreateNewBoard()
 	}
 }
 
-char board::GetObjectSymbol(int x, int y)
-{
-	// Look for pegs first
-	for (int i = 0; i < (int)pegs.size(); i++)
-	{
-		std::pair<int, int> pegPos = pegs[i].GetWorldPosition();
-		if (pegPos.first == x && pegPos.second == y)
-		{
-			return '0' + pegs[i].GetOwner();
-		}
-	}
-	// If no pegs found, check the units
-	for (int i = 0; i < (int)units.size(); i++)
-	{
-		std::pair<int, int> unitPos = units[i].GetPosition();
-		if (units[i].GetArea() != AREA_HOME && unitPos.first == x && unitPos.second == y)
-		{
-			return 35;
-		}
-	}
-	// No object found - return a space
-	return ' ';
-}
-
 void board::CreateNewPegs()
 {
+	/* Create PEGS_PER_PLAYER Pegs for each of PLAYER_COUNT players. The pegHandle object is recycled multiple times. */
 	Peg pegHandle(0, 0);
 	for (int player = 0; player < PLAYER_COUNT; player++)
 	{
@@ -164,6 +152,9 @@ void board::CreateNewPegs()
 
 bool board::IsUnitOccupied(int index, int area, int owner)
 {
+	/* Iterate through all the Pegs and check if their position, area and owner match the parameters.
+	 * If owner == -1, ignore ownership of the Pegs.
+	 */
 	for (int i = 0; i < (int)pegs.size(); i++)
 	{
 		if (pegs[i].GetArea() == area && pegs[i].GetAreaPosition() == index
@@ -177,6 +168,12 @@ bool board::IsUnitOccupied(int index, int area, int owner)
 
 bool board::CanPegMove(int player, int pegIndex, int amountOfSpaces)
 {
+	/* The following snippet relies on the fact that in current implementation the data structures are initialized
+	 * on startup and left unmodified afterwards. In case this changes, this function must be re-evaluated.
+	 *
+	 * Iterate through all the Pegs and check for the owner. The Pegs are located in memory in fixed order, thus
+	 * their position can be used as index.
+	 */
 	int pegsFound = 0;
 	for (int i = 0; i < (int)pegs.size(); i++)
 	{
@@ -199,10 +196,19 @@ bool board::CanPegMoveRaw(int pegIndexInArray, int amountOfSpaces)
 	int owner = pegs[pegIndexInArray].GetOwner();
 	int finishPos = game::players[owner].GetPegFinishTurn();
 
+	/* A Peg is unable to move if any of the following is true:
+	 *	It is located in home area
+	 *	A Peg is in finish area and there are not enough units in front of it
+	 *	A Peg is close to the finish area and there are not enough units in front of it
+	 *	A Peg is in finish area and the target unit is occupied by other Peg
+	 *	A Peg is in public area and the target unit is occupied by the Peg with the same owner
+	 *	A Peg is close to the finish area and the target unit is occupied by other Peg
+	 */
 	if (area == AREA_HOME
 		|| (area == AREA_FINISH && pos + amountOfSpaces >= PEGS_PER_PLAYER)
 		|| (area == AREA_PUBLIC && pos < finishPos && pos + amountOfSpaces - finishPos >= PEGS_PER_PLAYER)
 		|| (area == AREA_FINISH && board::IsUnitOccupied(pos + amountOfSpaces, AREA_FINISH, owner))
+		|| (area == AREA_PUBLIC && pos + amountOfSpaces < finishPos && board::IsUnitOccupied(pos + amountOfSpaces, AREA_PUBLIC, owner))
 		|| (area == AREA_PUBLIC && pos < finishPos && pos + amountOfSpaces >= finishPos && board::IsUnitOccupied(pos + amountOfSpaces - finishPos, AREA_FINISH, owner)))
 	{
 		return false;
@@ -213,8 +219,8 @@ bool board::CanPegMoveRaw(int pegIndexInArray, int amountOfSpaces)
 
 void board::SendPegToHome(int position, int area)
 {
+	/* Find the Peg to teleport */
 	int targetPeg = -1;
-	// Find our target peg
 	for (int i = 0; i < (int)pegs.size(); i++)
 	{
 		if (pegs[i].GetArea() == area && pegs[i].GetAreaPosition() == position)
@@ -224,10 +230,11 @@ void board::SendPegToHome(int position, int area)
 		}
 	}
 
+	/* No Peg found - stop the execution */
 	if (targetPeg == -1)
 		return;
 
-	// Find a suitable place for said peg
+	/* Look for a place in the home area and, if found, teleport there */
 	for (int i = 0; i < (int)units.size(); i++)
 	{
 		if (units[i].GetArea() == AREA_HOME && units[i].GetOwner() == pegs[targetPeg].GetOwner()

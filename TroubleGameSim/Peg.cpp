@@ -8,6 +8,7 @@ using namespace troubleGameSim;
 
 std::pair<int, int> Peg::GetWorldPosition()
 {
+	/* Iterate through all the units until the one with matching parameters is found. */
 	for (int i = 0; i < (int)board::units.size(); i++)
 	{
 		if (board::units[i].GetIndex() == pos
@@ -22,9 +23,6 @@ std::pair<int, int> Peg::GetWorldPosition()
 
 void Peg::MoveTo(int pos, int area)
 {
-	if (pos != this->pos || area != this->area)
-	{
-		this->pos = pos;
-		this->area = area;
-	}
+	this->pos = pos;
+	this->area = area;
 }

@@ -4,17 +4,14 @@
 #include "game.h"
 #include "settings.h"
 
-#ifdef __linux__
-    #include <unistd.h>
-    #include <termios.h>
-#endif
-
 using namespace troubleGameSim;
 
+/* Linux implementation of a getch() function */
 int io::getch()
 {
-	// Reference:
-	// https://stackoverflow.com/questions/7469139/what-is-equivalent-to-getch-getche-in-linux
+	/* Reference:
+	 * https://stackoverflow.com/questions/7469139/what-is-equivalent-to-getch-getche-in-linux
+	 */
 
     char buf=0;
     struct termios old={0};
@@ -36,8 +33,9 @@ int io::getch()
     return (int)buf;
 }
 
-// Reference:
-// https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c
+/* Reference:
+ * https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c
+ */
 void io::MoveCaretTo(int x, int y)
 {
 	printf("\033[%d;%dH", (y + 1), (x + 1));

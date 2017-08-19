@@ -142,9 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="board.h" />
     <ClInclude Include="BoardUnit.h" />
     <ClInclude Include="game.h" />

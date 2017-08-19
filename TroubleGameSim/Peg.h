@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "settings.h"
 
+/* A class that represents some player's peg. */
 class Peg
 {
 private:
@@ -15,7 +16,6 @@ private:
 	 * - Range [0; 3]
 	 */
 	int pos;
-	std::pair<int, int> worldPosition;
 
 	/* Peg current location.
 	 * 0: Home area, not in play yet
@@ -28,26 +28,31 @@ private:
 	int owner;
 
 public:
+	/* Basic constructor */
 	Peg(int pos, int owner)
 	{
 		this->pos = pos;
 		this->owner = owner;
 		this->area = troubleGameSim::AREA_HOME;
-		worldPosition = { -1, -1 };
 	}
+	/* Recycle the Peg. Helps to prevent the creation of multiple objects during initialization. */
 	void Recycle(int pos, int owner)
 	{
 		this->pos = pos;
 		this->owner = owner;
 		this->area = troubleGameSim::AREA_HOME;
-		worldPosition = { -1, -1 };
 	}
 
+	/* Calculates and returns the world position of the Peg, based on current area, position and owner. */
 	std::pair<int, int> GetWorldPosition();
 
+	/* Public getter methods. Blocks modifications of those variables by outsiders. */
 	int GetOwner() { return owner; }
 	int GetArea() { return area; }
 	int GetAreaPosition() { return pos; }
 
+	/* Move this peg to some position in some area.
+	 * In case of AREA_HOME and AREA_FINISH, the target position also depends on the owner.
+	 */
 	void MoveTo(int pos, int area);
 };

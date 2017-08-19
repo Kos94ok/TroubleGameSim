@@ -7,6 +7,7 @@ using namespace troubleGameSim;
 
 int Player::GetPegStartingPosition()
 {
+	/* (index * 7) - 1, with overflow */
 	switch (index)
 	{
 	case 0:
@@ -23,16 +24,14 @@ int Player::GetPegStartingPosition()
 
 int Player::GetPegFinishTurn()
 {
-	int val = GetPegStartingPosition() + 27;
-	if (val >= 28)
-		val -= 28;
-	return val;
+	/* The first unreachable unit is always the starting unit. */
+	return GetPegStartingPosition();
 }
 
 void Player::MarkAsFinished()
 {
-	// Add the trophy
+	/* Add the trophy */
 	trophy = game::playersFinished;
-	// Increment the finished player counter
+	/* Increment the finished player counter */
 	game::playersFinished += 1;
 }

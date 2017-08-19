@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "game.h"
 #include "board.h"
-#include <random>
 
 using namespace troubleGameSim;
 
@@ -13,16 +12,19 @@ int game::activePlayer = 0;
 std::vector<Player> game::players;
 
 int game::rolledValue = -1;
-std::mt19937 randomEngine;
+std::mt19937 game::randomEngine;
 
 void game::StartNewGame()
 {
+	/* Initialize a random engine */
 	std::random_device rd;
 	randomEngine = std::mt19937(rd());
 
+	/* Create a new board and a set of Pegs */
 	board::CreateNewBoard();
 	board::CreateNewPegs();
 
+	/* Create the players */
 	for (int i = 0; i < PLAYER_COUNT; i++)
 	{
 		players.push_back(Player(i));
@@ -31,14 +33,15 @@ void game::StartNewGame()
 
 void game::PopNumber()
 {
+	/* Define the value range */
 	std::uniform_int_distribution<int> dist(1, 6);
-
+	/* Roll some value */
 	rolledValue = dist(randomEngine);
-	//rolledValue = 6;
 }
 
 bool game::ResetTurnIfApplicable(int player)
 {
+	/* If a player rolled 6, reset the turn */
 	if (game::rolledValue == 6)
 	{
 		game::rolledValue = -1;
@@ -50,7 +53,7 @@ bool game::ResetTurnIfApplicable(int player)
 
 bool game::PerformAction(game::Action action, int player)
 {
-	// Roll a number
+	/* Roll a number */
 	if (action == game::Action::rollNumber)
 	{
 		game::PopNumber();
@@ -59,58 +62,75 @@ bool game::PerformAction(game::Action action, int player)
 			game::players[player].AllowIntoGame();
 		return false;
 	}
-	// New peg
+	/* New Peg on the board */
 	else if (action == game::Action::newPeg)
 	{
-		// Find a peg
+		/* Find a suitable Peg */
 		for (int i = 0; i < (int)board::pegs.size(); i++)
 		{
 			if (board::pegs[i].GetOwner() == player && board::pegs[i].GetArea() == AREA_HOME)
 			{
+				/* Move that Peg to a starting position */
 				board::pegs[i].MoveTo(game::players[game::activePlayer].GetPegStartingPosition(), AREA_PUBLIC);
 				break;
 			}
 		}
+		/* Check if the turn is over or will continue */
 		return ResetTurnIfApplicable(player);
 	}
-	// Move a peg
+	/* Move a Peg */
 	else if (action == game::Action::movePeg)
 	{
-		// Find a peg
+		/* Select a peg index to move. For simplicity, set to constant value. */
+		int movedPegIndex = 0;
+		/* Find a Peg to move */
+		int pegsFound = 0;
+		/* Iterate through all the Pegs until the suitable one is found */
 		for (int i = 0; i < (int)board::pegs.size(); i++)
 		{
 			if (board::pegs[i].GetOwner() == player && board::pegs[i].GetArea() != AREA_HOME && board::CanPegMoveRaw(i, game::rolledValue))
 			{
-				//board::pegs[i].MoveTo(game::players[game::activePlayer].GetPegStartingPosition(), AREA_PUBLIC);
-				int targetArea = board::pegs[i].GetArea();
-				int targetPosition = board::pegs[i].GetAreaPosition() + game::rolledValue;
-				int finishTurn = game::players[player].GetPegFinishTurn();
-				// Turn to finish
-				if (targetArea == AREA_PUBLIC && board::pegs[i].GetAreaPosition() < finishTurn && targetPosition >= finishTurn)
+				/* Peg found */
+				if (movedPegIndex == pegsFound)
 				{
-					targetPosition -= finishTurn;
-					targetArea = AREA_FINISH;
+					/* Get some data */
+					int targetArea = board::pegs[i].GetArea();
+					int targetPosition = board::pegs[i].GetAreaPosition() + game::rolledValue;
+					int finishTurn = game::players[player].GetPegFinishTurn();
+					/* If the move will put the Peg over one whole lap, turn it to finish area instead */
+					if (targetArea == AREA_PUBLIC && board::pegs[i].GetAreaPosition() < finishTurn && targetPosition >= finishTurn)
+					{
+						targetPosition -= finishTurn;
+						targetArea = AREA_FINISH;
+					}
+					/* Prevent the position value from going over maximum */
+					else
+					{
+						if (targetPosition >= PUBLIC_AREA_LENGTH)
+							targetPosition -= PUBLIC_AREA_LENGTH;
+					}
+					/* If the target position is occupied, move other Peg home */
+					if (targetArea == AREA_PUBLIC && board::IsUnitOccupied(targetPosition, AREA_PUBLIC))
+					{
+						board::SendPegToHome(targetPosition, AREA_PUBLIC);
+					}
+					/* Perform the move */
+					board::pegs[i].MoveTo(targetPosition, targetArea);
+					/* Check for game winning condition */
+					game::CheckForWin(player);
+					break;
 				}
-				// Adjust for board overflow
+				/* Wrong index, keep searching */
 				else
 				{
-					if (targetPosition >= PUBLIC_AREA_LENGTH)
-						targetPosition -= PUBLIC_AREA_LENGTH;
+					pegsFound += 1;
 				}
-				// Send enemy peg to home
-				if (targetArea == AREA_PUBLIC && board::IsUnitOccupied(targetPosition, AREA_PUBLIC))
-				{
-					board::SendPegToHome(targetPosition, AREA_PUBLIC);
-				}
-				board::pegs[i].MoveTo(targetPosition, targetArea);
-				// Check for game winning condition
-				game::CheckForWin(player);
-				break;
 			}
 		}
+		/* Check if the turn is over or will continue */
 		return ResetTurnIfApplicable(player);
 	}
-	// Skip the turn
+	/* Skip the turn */
 	else if (action == game::Action::skipTurn)
 	{
 		return true;
@@ -120,7 +140,9 @@ bool game::PerformAction(game::Action action, int player)
 
 game::Action game::GetPerformedAction(int index, int player)
 {
+	/* Convert key code into an action number */
 	index -= 49;
+	/* Return the selected action */
 	std::vector<game::Action> availableActions = GetAvailableActions(player);
 	if (index >= 0 && index < (int)availableActions.size())
 	{
@@ -133,7 +155,7 @@ std::vector<game::Action> game::GetAvailableActions(int player)
 {
 	std::vector<game::Action> returnVector;
 
-	// Pre-calculate some values
+	/* Get the amount of Pegs in player's home area */
 	int pegsInHome = 0;
 	for (int i = 0; i < (int)board::pegs.size(); i++)
 	{
@@ -142,6 +164,7 @@ std::vector<game::Action> game::GetAvailableActions(int player)
 			pegsInHome += 1;
 		}
 	}
+	/* Get the amount of Pegs that player can move */
 	int movablePegs = 0;
 	for (int i = 0; i < PEGS_PER_PLAYER; i++)
 	{
@@ -151,21 +174,23 @@ std::vector<game::Action> game::GetAvailableActions(int player)
 		}
 	}
 
-	// Check for all the possible actions
+	/* If a player hasn't popped a number, allow them to pop */
 	if (!game::players[player].hasPoppedThisTurn)
 	{
 		returnVector.push_back(game::Action::rollNumber);
 	}
+	/* If player has popped a 6, there are Pegs in home area and the starting position is not occupied, allow them to move a Peg into the public area */
 	if (pegsInHome > 0 && !board::IsUnitOccupied(game::players[player].GetPegStartingPosition(), AREA_PUBLIC) && game::rolledValue == 6)
 	{
 		returnVector.push_back(game::Action::newPeg);
 	}
+	/* If a player has popped some number and has some Peg that can move this amount of spaces, allow them to move */
 	if (game::players[player].HasStartedPlaying() && game::players[player].hasPoppedThisTurn && movablePegs > 0)
 	{
 		returnVector.push_back(game::Action::movePeg);
 	}
 
-	// If nothing else - skip the turn
+	/* If a player can't do anything, allow them to skip a turn */
 	if (returnVector.size() == 0)
 		returnVector.push_back(game::Action::skipTurn);
 
@@ -174,7 +199,7 @@ std::vector<game::Action> game::GetAvailableActions(int player)
 
 void game::CheckForWin(int player)
 {
-	// Calculate the pegs
+	/* Check the amount of Pegs in finish area */
 	int pegsInPlace = 0;
 	for (int i = 0; i < (int)board::pegs.size(); i++)
 	{
@@ -183,7 +208,7 @@ void game::CheckForWin(int player)
 			pegsInPlace += 1;
 		}
 	}
-	// If there are enough, declare the winner
+	/* If all the Pegs are in finish area, the player has finished the game */
 	if (pegsInPlace == PEGS_PER_PLAYER)
 	{
 		game::players[player].MarkAsFinished();
